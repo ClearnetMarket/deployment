@@ -1,0 +1,100 @@
+version: '3.8'
+
+volumes:
+  freeport_cache:
+  freeport_data_volume:
+  db:
+    driver: local
+
+networks:
+  freeport:
+    external: true
+
+services:
+  frontend:
+    container_name: freeport-frontend
+    image: freeport/freeport-frontend
+    restart: on-failure
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile.frontend-dev
+    volumes:
+      - ../frontend:/app
+    ports:
+      - '5173:5173'
+    networks:
+      - freeport
+    command: npm run serve
+
+
+  api:
+    container_name: freeport-api
+    image: freeport/freeport-api
+    restart: on-failure
+    build:
+        context: ../api
+        dockerfile: Dockerfile.api-dev
+    volumes:
+        - ../api:/app
+        - freeport_data_volume:/home/droid/freeport/data
+    depends_on:
+        -   redis
+    ports:
+      - '5000:5000'
+    networks:
+      - freeport
+
+
+  redis:
+      container_name: freeport-redis
+      image: redis:latest
+      command: redis-server --save 20 1 --loglevel warning
+      restart: on-failure
+      ports:
+        - '6379:6379'
+      volumes:
+        - freeport_cache:/home/droid/freeport/data/redis
+      networks:
+        - freeport
+
+
+  coinprice:
+    container_name: freeport-coinprices
+    image: freeport/freeport-coinprices
+    volumes:
+        - ../crypto_prices:/app
+    build:
+       context: ../crypto_prices
+       dockerfile: Dockerfile.prices-dev
+    networks:
+      - freeport
+
+
+  crons:
+    container_name: freeport-crons
+    image: freeport/freeport-crons
+    volumes:
+        - ../background:/app
+    build:
+       context: ../background
+       dockerfile: Dockerfile.crons-dev
+    networks:
+      - freeport
+
+  database:
+    image: postgres:latest
+    restart: always
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - ../dbdata/db:/var/lib/postgresql/data
+      - ../dbdata/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - freeport
