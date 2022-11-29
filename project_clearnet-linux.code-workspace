@@ -2,7 +2,7 @@
 	"folders": [
 
 		{
-			"path": "./api"
+			"path": "./backend"
 		},
 		{
 			"path": "./frontend"
@@ -11,10 +11,7 @@
 			"path": "./background"
 		},
 		{
-			"path": "./crypto_prices"
-		},
-		{
-			"path": "./emailer"
+			"path": "./coinprices"
 		},
 		{
 			"path": "./wallet_bch"
