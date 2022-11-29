@@ -18,12 +18,13 @@ git clone https://github.com/ClearnetMarket/backend.git
 git clone https://github.com/ClearnetMarket/wallet_btc.git
 git clone https://github.com/ClearnetMarket/wallet_xmr.git
 git clone https://github.com/ClearnetMarket/wallet_bch.git
-git clone https://github.com/ClearnetMarket/CoinPrices.git
+git clone https://github.com/ClearnetMarket/coinprices.git
 ```
 Make sure Docker is installed (newest version)
 ```bash
   cd deployment
-  docker-compose -f docker-compose-dev.yml up
+  sudo docker network create freeport
+  sudo docker-compose -f docker-compose-dev.yml up
 ```
 
 This will dockerize the entire application.  It might take 10-30 mins

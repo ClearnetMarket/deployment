@@ -32,10 +32,10 @@ services:
     image: freeport/freeport-api
     restart: on-failure
     build:
-        context: ../api
+        context: ../backend
         dockerfile: Dockerfile.api-dev
     volumes:
-        - ../api:/app
+        - ../backend:/app
         - freeport_data_volume:/home/droid/freeport/data
     depends_on:
         -   redis
@@ -62,9 +62,9 @@ services:
     container_name: freeport-coinprices
     image: freeport/freeport-coinprices
     volumes:
-        - ../crypto_prices:/app
+        - ../coinprices:/app
     build:
-       context: ../crypto_prices
+       context: ../coinprices
        dockerfile: Dockerfile.prices-dev
     networks:
       - freeport
