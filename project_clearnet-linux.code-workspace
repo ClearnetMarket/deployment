@@ -1,0 +1,81 @@
+{
+	"folders": [
+
+		{
+			"path": "./api"
+		},
+		{
+			"path": "./frontend"
+		},
+		{
+			"path": "./background"
+		},
+		{
+			"path": "./crypto_prices"
+		},
+		{
+			"path": "./emailer"
+		},
+		{
+			"path": "./wallet_bch"
+		},
+		{
+			"path": "./wallet_btc"
+		},
+		{
+			"path": "./wallet_xmr"
+		},
+		{
+			"path": "./deployment"
+		},
+		{
+			"path": "./dbdata"
+		},
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "",
+		"editor.parameterHints.enabled": true,
+		"python.defaultInterpreterPath": "./venv/bin/python3",
+
+		"editor.bracketPairColorization.enabled": true,
+		"python.pythonPath": "./venv/bin/python3",
+		"terminal.integrated.env.linux": {
+			"PYTHONPATH": "${workspaceFolder}/config/venv/bin/python3"
+		},
+		"editor.guides.bracketPairs": true,
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.codeActionsOnSave": ["source.fixAll.eslint"],
+		"eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
+		"typescript.tsdk": "node_modules/typescript/lib",
+		"[vue]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		}
+
+
+
+
+	},
+	"files.associations": {
+		"*.html": "jinja-html"
+	},
+	"extensions": {
+
+		"recommendations": [
+			"aaron-bond.better-comments",
+			"ms-vscode-remote.remote-ssh",
+			"vscode-icons-team.vscode-icons",
+			"hookyqr.beautify",
+			"russelldavis.better-pageup-pagedown",
+			"monosans.djlint",
+			"sleistner.vscode-fileutils",
+			"ms-python.python",
+			"kevinrose.vsc-python-indent",
+			"mhutchie.git-graph",
+			"ecmel.vscode-html-css",
+			"zignd.html-css-class-completion",
+			"ms-python.vscode-pylance",
+			"bradlc.vscode-tailwindcss"
+		]
+	},
+}
