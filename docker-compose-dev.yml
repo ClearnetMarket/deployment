@@ -17,7 +17,7 @@ services:
     restart: on-failure
     build:
       context: ../frontend
-      dockerfile: Dockerfile.frontend-dev
+      dockerfile: Dockerfile
     volumes:
       - ../frontend:/app
     ports:
@@ -33,7 +33,7 @@ services:
     restart: on-failure
     build:
         context: ../backend
-        dockerfile: Dockerfile.api-dev
+        dockerfile: Dockerfile
     volumes:
         - ../backend:/app
         - freeport_data_volume:/home/droid/freeport/data
@@ -61,11 +61,13 @@ services:
   coinprice:
     container_name: freeport-coinprices
     image: freeport/freeport-coinprices
+    ports:
+        - '5050:5050'
     volumes:
         - ../coinprices:/app
     build:
        context: ../coinprices
-       dockerfile: Dockerfile.prices-dev
+       dockerfile: Dockerfile
     networks:
       - freeport
 
@@ -73,13 +75,16 @@ services:
   crons:
     container_name: freeport-crons
     image: freeport/freeport-crons
+    ports:
+        - '5055:5055'
     volumes:
-        - ../background:/app
+        - ../crons:/app
     build:
-       context: ../background
-       dockerfile: Dockerfile.crons-dev
+       context: ../crons
+       dockerfile: Dockerfile
     networks:
       - freeport
+
 
   database:
     image: postgres:latest
@@ -96,5 +101,47 @@ services:
     volumes: 
       - ../dbdata/db:/var/lib/postgresql/data
       - ../dbdata/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - freeport
+
+
+  wallet_btc:
+    container_name: freeport-wallet_btc
+    image: freeport/freeport-wallet_btc
+    ports:
+        - '5075:5075'
+    volumes:
+        - ../wallet_btc:/app
+    build:
+       context: ../wallet_btc
+       dockerfile: Dockerfile
+    networks:
+      - freeport
+
+
+  wallet_bch:
+    container_name: freeport-wallet_bch
+    image: freeport/freeport-wallet_bch
+    ports:
+        - '5080:5080'
+    volumes:
+        - ../wallet_bch:/app
+    build:
+       context: ../wallet_bch
+       dockerfile: Dockerfile
+    networks:
+      - freeport
+
+
+  wallet_xmr:
+    container_name: freeport-wallet_xmr
+    image: freeport/freeport-wallet_xmr
+    ports:
+        - '5085:5085'
+    volumes:
+        - ../wallet_xmr:/app
+    build:
+       context: ../wallet_xmr
+       dockerfile: Dockerfile
     networks:
       - freeport
