@@ -44,6 +44,24 @@ services:
     networks:
       - freeport
 
+  database:
+    image: postgres:latest
+    restart: always
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - ../dbdata/db:/var/lib/postgresql/data
+      - ../dbdata/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - freeport
+
 
   redis:
       container_name: freeport-redis
@@ -85,24 +103,6 @@ services:
     networks:
       - freeport
 
-
-  database:
-    image: postgres:latest
-    restart: always
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - '5432:5432'
-    volumes: 
-      - ../dbdata/db:/var/lib/postgresql/data
-      - ../dbdata/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - freeport
 
 
   wallet_btc:
