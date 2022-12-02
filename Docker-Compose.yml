@@ -80,7 +80,7 @@ services:
     container_name: freeport-coinprices
     image: freeport/freeport-coinprices
     ports:
-        - '5050:5050'
+        - '5054:5054'
     volumes:
         - ../coinprices:/app
     build:
