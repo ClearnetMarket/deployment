@@ -1,0 +1,84 @@
+version: '3.8'
+
+volumes:
+  freeport_cache:
+  freeport_data_volume:
+
+networks:
+  freeport:
+    external: true
+
+services:
+
+
+  backend:
+    image: anekdotin/freeport-backend
+    restart: always
+    volumes:
+        - freeport_data_volume:/home/droid/freeport/data
+    depends_on:
+        - redis
+    ports:
+      - '5000:5000'
+    networks:
+      - freeport
+
+
+  frontend:
+    image: anekdotin/freeport-frontend
+    restart: on-failure
+    ports:
+      - '5173:5173'
+    networks:
+      - freeport
+
+
+  redis:
+      image: redis:latest
+      restart: on-failure
+      ports:
+        - '6379:6379'
+      volumes:
+        - freeport_cache:/data
+      networks:
+        - freeport
+
+
+  coinprice:
+    image: anekdotin/freeport-coinprices
+    ports:
+        - '5054:5054'
+    networks:
+      - freeport
+
+
+  crons:
+    image: anekdotin/freeport-crons
+    ports:
+        - '5055:5055'
+    networks:
+      - freeport
+
+
+  wallet_btc:
+    image: anekdotin/freeport-wallet_btc
+    ports:
+        - '5075:5075'
+    networks:
+      - freeport
+
+
+  wallet_bch:
+    image: anekdotin/freeport-wallet_bch
+    ports:
+        - '5080:5080'
+    networks:
+      - freeport
+
+
+  wallet_xmr:
+    image: anekdotin/freeport-wallet_xmr
+    ports:
+        - '5085:5085'
+    networks:
+      - freeport

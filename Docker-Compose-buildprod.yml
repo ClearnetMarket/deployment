@@ -3,22 +3,20 @@ version: '3.8'
 volumes:
   freeport_cache:
   freeport_data_volume:
-  db:
-    driver: local
 
 networks:
   freeport:
     external: true
 
 services:
-  api:
-    container_name: freeport-api
-    restart: on-failure
+
+  backend:
+    container_name: freeport-backend
+    restart: always
     build:
         context: ../backend
-        dockerfile: Dockerfile
+        dockerfile: Dockerfile.prod
     volumes:
-        - ../backend:/app
         - freeport_data_volume:/home/droid/freeport/data
     depends_on:
         -   redis
@@ -29,47 +27,23 @@ services:
 
   frontend:
     container_name: freeport-frontend
- 
     restart: on-failure
     build:
       context: ../frontend
-      dockerfile: Dockerfile
-    volumes:
-      - ../frontend:/app
+      dockerfile: Dockerfile.prod
     ports:
       - '5173:5173'
     networks:
       - freeport
-    command: npm run serve
-
-  database:
-    image: postgres:latest
-    restart: always
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - '5432:5432'
-    volumes: 
-      - ../dbdata/db:/var/lib/postgresql/data
-      - ../dbdata/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - freeport
-
+    command: npm run build
 
   redis:
-      container_name: freeport-redis
       image: redis:latest
-      command: redis-server --save 20 1 --loglevel warning
       restart: on-failure
       ports:
         - '6379:6379'
       volumes:
-        - freeport_cache:/home/droid/freeport/data/redis
+        - freeport_cache:/data
       networks:
         - freeport
 
@@ -78,67 +52,53 @@ services:
     container_name: freeport-coinprices
     ports:
         - '5054:5054'
-    volumes:
-        - ../coinprices:/app
     build:
        context: ../coinprices
-       dockerfile: Dockerfile
+       dockerfile: Dockerfile.prod
     networks:
       - freeport
 
 
   crons:
     container_name: freeport-crons
-
     ports:
         - '5055:5055'
-    volumes:
-        - ../crons:/app
     build:
        context: ../crons
-       dockerfile: Dockerfile
+       dockerfile: Dockerfile.prod
     networks:
       - freeport
 
 
 
   wallet_btc:
-    container_name: freeport-wallet_btc
-  
+    container_name: freeport-wallet-btc
     ports:
         - '5075:5075'
-    volumes:
-        - ../wallet_btc:/app
     build:
        context: ../wallet_btc
-       dockerfile: Dockerfile
+       dockerfile: Dockerfile.prod
     networks:
       - freeport
 
 
   wallet_bch:
-    container_name: freeport-wallet_bch
- 
+    container_name: freeport-wallet-bch
     ports:
         - '5080:5080'
-    volumes:
-        - ../wallet_bch:/app
     build:
        context: ../wallet_bch
-       dockerfile: Dockerfile
+       dockerfile: Dockerfile.prod
     networks:
       - freeport
 
 
   wallet_xmr:
-    container_name: freeport-wallet_xmr
- 
+    container_name: freeport-wallet-xmr
     ports:
         - '5085:5085'
-    volumes:
-        - ../wallet_xmr:/app
     build:
        context: ../wallet_xmr
-       dockerfile: Dockerfile
+       dockerfile: Dockerfile.prod
     networks:
       - freeport
