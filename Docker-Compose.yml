@@ -12,14 +12,14 @@ networks:
 
 services:
   api:
-    container_name: freeport-api
+    container_name: freeport-backend-dev
     restart: on-failure
     build:
         context: ../backend
         dockerfile: Dockerfile
     volumes:
         - ../backend:/app
-        - freeport_data_volume:/home/droid/freeport/data
+        - freeport_data_volume:${BACKEND_DATA_DIRECTORY}
     depends_on:
         -   redis
     ports:
@@ -28,8 +28,7 @@ services:
       - freeport
 
   frontend:
-    container_name: freeport-frontend
- 
+    container_name: freeport-frontend-dev
     restart: on-failure
     build:
       context: ../frontend
@@ -43,6 +42,7 @@ services:
     command: npm run serve
 
   database:
+    container_name: freeport-database-dev
     image: postgres:latest
     restart: always
     logging:
@@ -62,20 +62,22 @@ services:
 
 
   redis:
-      container_name: freeport-redis
+      container_name: freeport-redis-dev
       image: redis:latest
       command: redis-server --save 20 1 --loglevel warning
       restart: on-failure
       ports:
         - '6379:6379'
       volumes:
-        - freeport_cache:/home/droid/freeport/data/redis
+        - freeport_cache:${REDIS_DIRECTORY}
+      env_file:
+        - .env
       networks:
         - freeport
 
 
   coinprice:
-    container_name: freeport-coinprices
+    container_name: freeport-coinprices-dev
     ports:
         - '5054:5054'
     volumes:
@@ -88,7 +90,7 @@ services:
 
 
   crons:
-    container_name: freeport-crons
+    container_name: freeport-crons-dev
 
     ports:
         - '5055:5055'
@@ -103,8 +105,7 @@ services:
 
 
   wallet_btc:
-    container_name: freeport-wallet_btc
-  
+    container_name: freeport-wallet-btc-dev
     ports:
         - '5075:5075'
     volumes:
@@ -117,8 +118,7 @@ services:
 
 
   wallet_bch:
-    container_name: freeport-wallet_bch
- 
+    container_name: freeport-wallet-bch-dev
     ports:
         - '5080:5080'
     volumes:
@@ -131,8 +131,7 @@ services:
 
 
   wallet_xmr:
-    container_name: freeport-wallet_xmr
- 
+    container_name: freeport-wallet-xmr-dev
     ports:
         - '5085:5085'
     volumes:

@@ -3,6 +3,9 @@ version: '3.8'
 volumes:
   freeport_cache:
   freeport_data_volume:
+  freeport_bch_wallet_data:
+  freeport_xmr_wallet_data:
+  freeport_btc_wallet_data:
 
 networks:
   freeport:
@@ -11,24 +14,25 @@ networks:
 services:
 
 
+
   backend:
-    image: anekdotin/freeport-backend
+    image: anekdotin/freeport-backend:latest
     restart: always
     volumes:
-        - freeport_data_volume:/home/droid/freeport/data
+        - freeport_data_volume:${BACKEND_DATA_DIRECTORY}
     depends_on:
         - redis
     ports:
-      - '5000:5000'
+      - '5005:5005'
     networks:
       - freeport
 
 
   frontend:
-    image: anekdotin/freeport-frontend
+    image: anekdotin/freeport-frontend:latest
     restart: on-failure
     ports:
-      - '5173:5173'
+      - 80:5200'
     networks:
       - freeport
 
@@ -39,46 +43,52 @@ services:
       ports:
         - '6379:6379'
       volumes:
-        - freeport_cache:/data
+        - freeport_cache:${REDIS_DIRECTORY}
       networks:
         - freeport
 
-
   coinprice:
-    image: anekdotin/freeport-coinprices
+    image: anekdotin/freeport-coinprices:latest
     ports:
         - '5054:5054'
     networks:
       - freeport
 
-
   crons:
-    image: anekdotin/freeport-crons
+    image: anekdotin/freeport-crons:latest
     ports:
         - '5055:5055'
+    volumes:
+        - freeport_data_volume:${BACKEND_DATA_DIRECTORY}
     networks:
       - freeport
 
 
   wallet_btc:
-    image: anekdotin/freeport-wallet_btc
+    image: anekdotin/freeport-wallet-btc:latest
     ports:
         - '5075:5075'
     networks:
       - freeport
+    volumes:
+      - freeport_btc_wallet_data:${BTC_WALLET_DATA}
 
 
   wallet_bch:
-    image: anekdotin/freeport-wallet_bch
+    image: anekdotin/freeport-wallet-bch:latest
     ports:
         - '5080:5080'
     networks:
       - freeport
+    volumes:
+      - freeport_bch_wallet_data:${BCH_WALLET_DATA}
 
 
   wallet_xmr:
-    image: anekdotin/freeport-wallet_xmr
+    image: anekdotin/freeport-wallet-xmr:latest
     ports:
         - '5085:5085'
+    volumes:
+      - freeport_xmr_wallet_data:${XMR_WALLET_DATA}
     networks:
       - freeport
