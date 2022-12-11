@@ -10,8 +10,9 @@ networks:
   freeport:
     external: true
 
+name: LocalDevelopment
 services:
-  api:
+  backend:
     container_name: freeport-backend-dev
     restart: on-failure
     build:
@@ -39,7 +40,9 @@ services:
       - '5173:5173'
     networks:
       - freeport
-    command: npm run serve
+    command: npm run serve 
+    environment: 
+      - CHOKIDAR_USEPOLLING=true
 
   database:
     container_name: freeport-database-dev

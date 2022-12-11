@@ -11,8 +11,9 @@ networks:
   freeport:
     external: true
 
-services:
+name: Production
 
+services:
   backend:
     container_name: freeport-backend
     image: anekdotin/freeport-backend:latest
@@ -27,7 +28,7 @@ services:
     env_file:
         - .env
     ports:
-      - '5005:5005'
+      - '5000:5000'
     networks:
       - freeport
 
@@ -39,7 +40,7 @@ services:
       context: ../frontend
       dockerfile: Dockerfile.prod
     ports:
-      - 80:5200'
+      - "5010:5010"
     networks:
       - freeport
 

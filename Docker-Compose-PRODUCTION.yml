@@ -11,9 +11,8 @@ networks:
   freeport:
     external: true
 
+name: Freeport
 services:
-
-
 
   backend:
     image: anekdotin/freeport-backend:latest
@@ -23,7 +22,7 @@ services:
     depends_on:
         - redis
     ports:
-      - '5005:5005'
+      - '5000:5000'
     networks:
       - freeport
 
@@ -32,7 +31,7 @@ services:
     image: anekdotin/freeport-frontend:latest
     restart: on-failure
     ports:
-      - 80:5200'
+      - 5010:5010'
     networks:
       - freeport
 
