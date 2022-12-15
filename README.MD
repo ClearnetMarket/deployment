@@ -22,8 +22,12 @@ git clone https://github.com/ClearnetMarket/coinprices.git
 git clone https://github.com/ClearnetMarket/crons.git
 ```
 Make sure Docker is installed (newest version)
+
 ```bash
+  mkdir dbdata
   cd deployment
+  docker volume create freeport_cache
+  docker volume create freeport_data_volume
   docker network create freeport
   docker-compose -f docker-compose-dev.yml up
 ```
