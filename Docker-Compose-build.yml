@@ -26,7 +26,6 @@ services:
         - freeport_data_volume:${BACKEND_DATA_DIRECTORY}
     depends_on:
         - redis
-    
     env_file:
         - .env
     networks:
@@ -55,8 +54,6 @@ services:
       dockerfile: Dockerfile.prod
     ports:
       - "5010:5010"
-    environment:
-      - backend="backend"
     networks:
       - freeport
 
@@ -73,6 +70,15 @@ services:
         - freeport_cache:${REDIS_DIRECTORY}
       networks:
         - freeport
+
+  controller:
+    container_name: freeport-controller
+    image: ubuntu:latest
+    ports:
+        - '5099:5099'
+    networks:
+      - freeport
+
 
 
   coinprice:
@@ -143,3 +149,5 @@ services:
         - .env
     volumes:
       - xmr_wallet_data:${XMR_WALLET_DATA}
+
+
