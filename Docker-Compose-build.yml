@@ -22,20 +22,22 @@ services:
         dockerfile: Dockerfile.prod
     env_file:
         - .env
+    ports:
+      - "5000:5000"
     networks:
       - freeport
 
-  # frontend:
-  #   container_name: freeport-frontend
-  #   image: anekdotin/freeport-frontend:latest
-  #   restart: on-failure
-  #   build:
-  #     context: ../frontend
-  #     dockerfile: Dockerfile.prod
-  #   ports:
-  #     - "5010:5010"
-  #   networks:
-  #     - freeport
+  frontend:
+    container_name: freeport-frontend
+    image: anekdotin/freeport-frontend:latest
+    restart: on-failure
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile.prod
+    ports:
+      - "5010:5010"
+    networks:
+      - freeport
 
 
   # controller:

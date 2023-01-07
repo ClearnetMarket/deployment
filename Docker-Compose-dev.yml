@@ -21,7 +21,7 @@ services:
         dockerfile: Dockerfile
     volumes:
         - ../backend:/app
-        - freeport_data_volume:${BACKEND_DATA_DIRECTORY}
+        - /home/droid/freeport/dbdata/data:/data
     depends_on:
         -   redis
     ports:
