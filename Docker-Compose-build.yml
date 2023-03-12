@@ -39,84 +39,81 @@ services:
     networks:
       - freeport
 
+  controller:
+     container_name: freeport-controller
+     image: ubuntu:latest
+     ports:
+         - '5099:5099'
+     networks:
+       - freeport
 
-  # controller:
-  #   container_name: freeport-controller
-  #   image: ubuntu:latest
-  #   ports:
-  #       - '5099:5099'
-  #   networks:
-  #     - freeport
-
-
-
-  # coinprice:
-  #   container_name: freeport-coinprices
-  #   image: anekdotin/freeport-coinprices:latest
-  #   ports:
-  #       - '5054:5054'
-  #   build:
-  #      context: ../coinprices
-  #      dockerfile: Dockerfile.prod
-  #   networks:
-  #     - freeport
+  coinprice:
+     container_name: freeport-coinprices
+     image: anekdotin/freeport-coinprices:latest
+     ports:
+         - '5054:5054'
+     build:
+        context: ../coinprices
+        dockerfile: Dockerfile.prod
+     networks:
+       - freeport
 
 
-  # crons:
-  #   container_name: freeport-crons
-  #   image: anekdotin/freeport-crons:latest
-  #   ports:
-  #       - '5055:5055'
-  #   build:
-  #      context: ../crons
-  #      dockerfile: Dockerfile.prod
-  #   networks:
-  #     - freeport
+  crons:
+     container_name: freeport-crons
+     image: anekdotin/freeport-crons:latest
+     ports:
+         - '5055:5055'
+     build:
+        context: ../crons
+        dockerfile: Dockerfile.prod
+     networks:
+       - freeport
 
 
-  # wallet_btc:
-  #   container_name: freeport-wallet-btc
-  #   image: anekdotin/freeport-wallet-btc:latest
-  #   ports:
-  #       - '5075:5075'
-  #   build:
-  #      context: ../wallet_btc
-  #      dockerfile: Dockerfile.prod
-  #   networks:
-  #     - freeport
-  #   env_file:
-  #       - .env
-  #   volumes:
-  #     - btc_wallet_data:${BTC_WALLET_DATA}
+  wallet_btc:
+     container_name: freeport-wallet-btc
+     image: anekdotin/freeport-wallet-btc:latest
+     ports:
+         - '5075:5075'
+     build:
+        context: ../wallet_btc
+        dockerfile: Dockerfile.prod
+     networks:
+       - freeport
+     env_file:
+         - .env
+     volumes:
+       - btc_wallet_data:${BTC_WALLET_DATA}
 
-  # wallet_bch:
-  #   container_name: freeport-wallet-bch
-  #   image: anekdotin/freeport-wallet-bch:latest
-  #   ports:
-  #       - '5080:5080'
-  #   build:
-  #      context: ../wallet_bch
-  #      dockerfile: Dockerfile.prod
-  #   networks:
-  #     - freeport
-  #   env_file:
-  #       - .env
-  #   volumes:
-  #     - bch_wallet_data:${BCH_WALLET_DATA}
+  wallet_bch:
+     container_name: freeport-wallet-bch
+     image: anekdotin/freeport-wallet-bch:latest
+     ports:
+         - '5080:5080'
+     build:
+        context: ../wallet_bch
+        dockerfile: Dockerfile.prod
+     networks:
+       - freeport
+     env_file:
+         - .env
+     volumes:
+       - bch_wallet_data:${BCH_WALLET_DATA}
 
-  # wallet_xmr:
-  #   container_name: freeport-wallet-xmr
-  #   image: anekdotin/freeport-wallet-xmr:latest
-  #   ports:
-  #       - '5085:5085'
-  #   build:
-  #      context: ../wallet_xmr
-  #      dockerfile: Dockerfile.prod
-  #   networks:
-  #     - freeport
-  #   env_file:
-  #       - .env
-  #   volumes:
-  #     - xmr_wallet_data:${XMR_WALLET_DATA}
+  wallet_xmr:
+     container_name: freeport-wallet-xmr
+     image: anekdotin/freeport-wallet-xmr:latest
+     ports:
+         - '5085:5085'
+     build:
+        context: ../wallet_xmr
+        dockerfile: Dockerfile.prod
+     networks:
+       - freeport
+     env_file:
+         - .env
+     volumes:
+       - xmr_wallet_data:${XMR_WALLET_DATA}
 
 
