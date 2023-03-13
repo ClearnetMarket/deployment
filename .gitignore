@@ -3,3 +3,4 @@ rsync-production.sh
 githubtoken.txt
 crons.txt
 backend/
+/.idea/
