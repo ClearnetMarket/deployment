@@ -10,7 +10,7 @@ networks:
   freeport:
     external: true
 
-name: LocalDevelopment
+name: localdev
 services:
 
   backend:
